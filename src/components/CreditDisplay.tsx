@@ -1,6 +1,6 @@
 
 import { useCredits } from "@/hooks/useCredits";
-import { Coins, Infinity, PlusCircle } from "lucide-react";
+import { Coins, Infinity } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Popover,
@@ -9,17 +9,10 @@ import {
 } from "@/components/ui/popover";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useState } from "react";
-import PurchaseCreditsModal from "@/components/PurchaseCreditsModal";
 
 export const CreditDisplay = () => {
-  const { credits, isLoading, refreshCredits } = useCredits();
-  const [purchaseModalOpen, setPurchaseModalOpen] = useState(false);
+  const { credits, isLoading } = useCredits();
   const [popoverOpen, setPopoverOpen] = useState(false);
-  
-  const handlePurchaseClick = () => {
-    setPurchaseModalOpen(true);
-    setPopoverOpen(false); // Close popover after action
-  };
   
   if (isLoading) {
     return (
@@ -75,30 +68,14 @@ export const CreditDisplay = () => {
               <>
                 <p>Free daily: <span className="font-medium">{credits.freeCredits}</span></p>
                 <p>Total available: <span className="font-medium">{credits.totalCredits}</span></p>
-                <div className="flex flex-col gap-2 mt-2">
-                  <Button 
-                    size="sm" 
-                    variant="outline" 
-                    onClick={handlePurchaseClick} 
-                    className="w-full"
-                    aria-label="Purchase more credits"
-                  >
-                    <PlusCircle className="h-3 w-3 mr-1" aria-hidden="true" /> 
-                    Purchase Credits
-                  </Button>
-                </div>
+                <p className="text-xs text-muted-foreground mt-2">
+                  In-app purchases available in mobile app
+                </p>
               </>
             )}
           </div>
         </PopoverContent>
       </Popover>
-      
-      {/* Purchase Credits Modal */}
-      <PurchaseCreditsModal 
-        open={purchaseModalOpen} 
-        onOpenChange={setPurchaseModalOpen} 
-        onSuccess={refreshCredits}
-      />
     </>
   );
 };

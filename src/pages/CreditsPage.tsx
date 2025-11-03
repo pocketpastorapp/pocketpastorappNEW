@@ -1,28 +1,13 @@
 
-import { useState } from "react";
 import { Coins } from "lucide-react";
 import Layout from "@/components/Layout";
 import { useCredits } from "@/hooks/useCredits";
-import { usePaymentVerification } from "@/hooks/usePaymentVerification";
-import PurchaseCreditsModal from "@/components/PurchaseCreditsModal";
 import CreditsCard from "@/components/credits/CreditsCard";
 import CreditActions from "@/components/credits/CreditActions";
-import PaymentStatus from "@/components/credits/PaymentStatus";
 import CreditsPageSkeleton, { CreditsPageError } from "@/components/credits/CreditsPageSkeleton";
 
 const CreditsPage = () => {
   const { credits, isLoading, useCredit, addCredits, addCreditsFromAd, refreshCredits } = useCredits();
-  const [purchaseModalOpen, setPurchaseModalOpen] = useState(false);
-  const { paymentStatus } = usePaymentVerification(refreshCredits);
-
-  // If payment is being processed or completed, show payment status
-  if (paymentStatus === 'success' || paymentStatus === 'processing') {
-    return (
-      <Layout>
-        <PaymentStatus status={paymentStatus} />
-      </Layout>
-    );
-  }
 
   return (
     <Layout>
@@ -44,18 +29,12 @@ const CreditsPage = () => {
               addCredits={addCredits}
               addCreditsFromAd={addCreditsFromAd}
               useCredit={useCredit}
-              onPurchaseClick={() => setPurchaseModalOpen(true)}
+              onPurchaseClick={() => {}}
               refreshCredits={refreshCredits}
             />
           </>
         )}
       </div>
-      
-      <PurchaseCreditsModal 
-        open={purchaseModalOpen} 
-        onOpenChange={setPurchaseModalOpen} 
-        onSuccess={refreshCredits}
-      />
     </Layout>
   );
 };

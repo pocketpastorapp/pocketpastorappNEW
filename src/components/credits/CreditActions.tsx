@@ -14,28 +14,17 @@ interface CreditActionsProps {
 }
 
 const CreditActions = ({ 
-  credits, 
-  onPurchaseClick 
+  credits
 }: CreditActionsProps) => {
-  const [isBuyLoading, setIsBuyLoading] = useState(false);
-
   if (!credits) return null;
 
   return (
     <div className="space-y-6">
-      <h2 className="text-xl font-medium">Get More Credits</h2>
+      <h2 className="text-xl font-medium">Credits Information</h2>
       
-      <div className="grid grid-cols-1 gap-4">
-        <Button 
-          variant="outline" 
-          size="lg" 
-          className="w-full" 
-          onClick={onPurchaseClick}
-          disabled={isBuyLoading || credits.hasUnlimitedCredits}
-        >
-          <PlusCircle className="mr-2" />
-          {isBuyLoading ? "Processing..." : "Buy Credits"}
-        </Button>
+      <div className="text-sm text-muted-foreground">
+        <p>Credits are used for AI-powered features in the app.</p>
+        <p className="mt-2">In-app purchases will be available in the mobile version.</p>
       </div>
     </div>
   );
