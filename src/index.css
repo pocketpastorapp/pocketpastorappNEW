@@ -1,0 +1,208 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 210 40% 98%;
+    --foreground: 222 47% 11%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 11%;
+
+    --primary: 220 90% 56%;
+    --primary-foreground: 210 40% 98%;
+
+    --secondary: 210 40% 96%;
+    --secondary-foreground: 222 47% 11%;
+
+    --muted: 210 40% 96%;
+    --muted-foreground: 215 16% 47%;
+
+    --accent: 30 100% 91%;
+    --accent-foreground: 24 75% 50%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 214 32% 91%;
+    --input: 214 32% 91%;
+    --ring: 220 90% 56%;
+    
+    --radius: 1rem;
+    
+    --pastor-navy: 212 67% 30%;
+  }
+
+  .dark {
+    --background: 0 0% 12%; /* #1E1E1E */
+    --foreground: 210 40% 98%;
+
+    --card: 0 0% 16%; /* #292929 */
+    --card-foreground: 210 40% 98%;
+
+    --popover: 0 0% 16%; /* #292929 */
+    --popover-foreground: 210 40% 98%;
+
+    --primary: 220 90% 56%;
+    --primary-foreground: 210 40% 98%;
+
+    --secondary: 0 0% 16%; /* #292929 */
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 0 0% 16%; /* #292929 */
+    --muted-foreground: 215 20% 65%;
+
+    --accent: 30 100% 91%;
+    --accent-foreground: 24 75% 50%;
+
+    --destructive: 0 63% 31%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 0 0% 16%; /* #292929 */
+    --input: 0 0% 16%; /* #292929 */
+    --ring: 220 90% 56%;
+    
+    --pastor-navy: 212 67% 30%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    background-color: #184482 !important;
+    /* iOS PWA specific styles for pull-to-refresh */
+    overscroll-behavior-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-feature-settings: "rlig" 1, "calt" 1;
+    background-color: hsl(var(--background));
+    -webkit-background-size: cover;
+    background-size: cover;
+    /* Enable native iOS pull-to-refresh */
+    overscroll-behavior-y: auto;
+    -webkit-overflow-scrolling: touch;
+    /* Ensure touch actions don't interfere with native scrolling */
+    touch-action: manipulation;
+  }
+  
+  /* Ensure root element also has the correct background and iOS support */
+  #root {
+    background-color: hsl(var(--background));
+    min-height: 100vh;
+    /* iOS PWA pull-to-refresh support */
+    overscroll-behavior-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  /* iOS PWA specific styles when running in standalone mode */
+  @media (display-mode: standalone) {
+    html, body, #root {
+      overscroll-behavior-y: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+    
+    /* Ensure pull-to-refresh works in standalone mode */
+    body {
+      position: relative;
+      overflow-y: auto;
+    }
+  }
+  
+  /* Custom focus styles for pastor-navy color */
+  .focus-visible\:ring-pastor-navy:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 2px #184482;
+  }
+}
+
+@layer components {
+  .chat-message-container {
+    @apply relative p-4 rounded-2xl mb-4 max-w-[85%];
+  }
+  
+  /* Base styles only - actual colors will be applied inline via style attribute */
+  .user-message {
+    @apply ml-auto;
+  }
+  
+  .bot-message {
+    @apply mr-auto;
+  }
+
+  .scripture-reference {
+    @apply text-xs font-medium text-pastor-orange mt-2 block dark:text-pastor-orange/90;
+  }
+
+  .welcome-gradient {
+    @apply bg-gradient-to-br from-pastor-navy/70 via-pastor-blue to-pastor-peach;
+  }
+  
+  /* Hide scrollbars for prompt buttons */
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+  
+  /* Custom scrollbars for the notepad */
+  .custom-scrollbar-light::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  .custom-scrollbar-light::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+  }
+  
+  .custom-scrollbar-light::-webkit-scrollbar-thumb {
+    background: #184482;
+    border-radius: 10px;
+  }
+  
+  .custom-scrollbar-light::-webkit-scrollbar-thumb:hover {
+    background: #133661;
+  }
+  
+  .custom-scrollbar-dark::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  .custom-scrollbar-dark::-webkit-scrollbar-track {
+    background: #2a2a2a;
+    border-radius: 10px;
+  }
+  
+  .custom-scrollbar-dark::-webkit-scrollbar-thumb {
+    background: #184482;
+    border-radius: 10px;
+  }
+  
+  .custom-scrollbar-dark::-webkit-scrollbar-thumb:hover {
+    background: #133661;
+  }
+  
+  /* iOS PWA specific scroll containers */
+  .ios-scroll-container {
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-y: auto;
+  }
+  
+  /* Ensure chat containers support iOS native scrolling */
+  .chat-container {
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-y: auto;
+  }
+}

@@ -1,0 +1,4 @@
+
+// Re-export everything from the new modular structure for backward compatibility
+export * from './verseCluster';
+export { verseClusterService } from './verseCluster';

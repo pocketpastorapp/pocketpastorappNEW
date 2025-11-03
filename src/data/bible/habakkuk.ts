@@ -1,0 +1,67 @@
+
+import { LocalBibleData } from '@/services/localBibleService';
+
+export const habakkukData: LocalBibleData['HAB'] = {
+        "1": [
+            "The pronouncement which Habakkuk the prophet saw:",
+            "How long, LORD, have I called for help,\nAnd You do not hear?\nI cry out to You, \u201cViolence!\u201d\nYet You do not save.",
+            "Why do You make me see disaster,\nAnd make me look at destitution?\nYes, devastation and violence are before me;\nStrife exists and contention arises.",
+            "Therefore the Law is ignored,\nAnd justice is never upheld.\nFor the wicked surround the righteous;\nTherefore justice comes out confused.",
+            "\u201cLook among the nations! Watch!\nBe horrified! Be frightened speechless!\nFor I am accomplishing a work in your days\u2014\nYou would not believe it even if you were told!",
+            "\u201cFor behold, I am raising up the Chaldeans,\nThat grim and impetuous people\nWho march throughout the earth,\nTo take possession of dwelling places that are not theirs.",
+            "\u201cThey are terrifying and feared;\nTheir justice and authority originate with themselves.",
+            "\u201cTheir horses are faster than leopards,\nAnd quicker than wolves in the evening.\nTheir horsemen charge along,\nTheir horsemen come from afar;\nThey fly like an eagle swooping down to devour.",
+            "\u201cAll of them come for violence.\nTheir horde of faces moves forward.\nThey gather captives like sand.",
+            "\u201cThey make fun of kings,\nAnd dignitaries are an object of laughter to them.\nThey laugh at every fortress,\nThen heap up dirt and capture it.",
+            "\u201cThen they fly along like the wind and pass on.\nBut they will be held guilty,\nThey whose strength is their god.\u201d",
+            "Are You not from time everlasting,\nLORD, my God, my Holy One?\nWe will not die.\nYou, LORD, have appointed them to deliver judgment;\nAnd You, O Rock, have destined them to punish.",
+            "Your eyes are too pure to look at evil,\nAnd You cannot look at harm favorably.\nWhy do You look favorably\nAt those who deal treacherously?\nWhy are You silent when the wicked swallow up\nThose more righteous than they?",
+            "Why have You made people like the fish of the sea,\nLike crawling things that have no ruler over them?",
+            "The Chaldeans bring all of them up with a hook,\nDrag them away with their net,\nAnd gather them together in their fishing net.\nTherefore they rejoice and are joyful.",
+            "Therefore they offer a sacrifice to their net\nAnd burn incense to their fishing net,\nBecause through these things their catch is large,\nAnd their food is plentiful.",
+            "Will they therefore empty their net,\nAnd continually slay nations without sparing?"
+        ],
+        "2": [
+            "I will stand at my guard post\nAnd station myself on the watchtower;\nAnd I will keep watch to see what He will say to me,\nAnd how I may reply when I am reprimanded.",
+            "Then the LORD answered me and said,\n\u201cWrite down the vision\nAnd inscribe it clearly on tablets,\nSo that one who reads it may run.",
+            "\u201cFor the vision is yet for the appointed time;\nIt hurries toward the goal and it will not fail.\nThough it delays, wait for it;\nFor it will certainly come, it will not delay long.",
+            "\u201cBehold, as for the impudent one,\nHis soul is not right within him;\nBut the righteous one will live by his faith.",
+            "\u201cFurthermore, wine betrays an arrogant man,\nSo that he does not achieve his objective.\nHe enlarges his appetite like Sheol,\nAnd he is like death, never satisfied.\nHe also gathers to himself all the nations\nAnd collects to himself all the peoples.",
+            "\u201cWill all of these not take up a song of ridicule against him,\nEven a saying and insinuations against him\nAnd say, \u2018Woe to him who increases what is not his\u2014\nFor how long\u2014\nAnd makes himself rich with debts!\u2019",
+            "\u201cWill your creditors not rise up suddenly,\nAnd those who collect from you awaken?\nIndeed, you will become plunder for them.",
+            "\u201cSince you have looted many nations,\nAll the rest of the peoples will loot you\u2014\nBecause of human bloodshed and violence done to the land,\nTo the town and all its inhabitants.",
+            "\u201cWoe to him who makes evil profit for his household,\nTo put his nest on high,\nTo be saved from the hand of catastrophe!",
+            "\u201cYou have planned a shameful thing for your house\nBy bringing many peoples to an end;\nSo you are sinning against yourself.",
+            "\u201cFor the stone will cry out from the wall,\nAnd the rafter will answer it from the framework.",
+            "\u201cWoe to him who builds a city with bloodshed,\nAnd founds a town with violence!",
+            "\u201cIs it not indeed from the LORD of armies\nThat peoples labor merely for fire,\nAnd nations become weary for nothing?",
+            "\u201cFor the earth will be filled\nWith the knowledge of the glory of the LORD,\nAs the waters cover the sea.",
+            "\u201cWoe to him who makes his neighbor drink;\nTo you who mix in your venom even to make your neighbors drunk,\nSo as to look at their genitalia!",
+            "\u201cYou will be filled with disgrace rather than honor.\nDrink, you yourself, and expose your own foreskin!\nThe cup in the LORD\u2019S right hand will come around to you,\nAnd utter disgrace will come upon your glory.",
+            "\u201cFor the violence done to Lebanon will overwhelm you,\nAnd the devastation of its animals by which you terrified them,\nBecause of human bloodshed and violence done to the land,\nTo the town and all its inhabitants.",
+            "\u201cWhat benefit is a carved image when its maker has carved it,\nOr a cast metal image, a teacher of falsehood?\nFor its maker trusts in his own handiwork\nWhen he fashions speechless idols.",
+            "\u201cWoe to him who says to a piece of wood, \u2018Awake!\u2019\nTo a mute stone, \u2018Arise!\u2019\nThat is your teacher?\nBehold, it is overlaid with gold and silver,\nYet there is no breath at all inside it.",
+            "\u201cBut the LORD is in His holy temple.\nLet all the earth be silent before Him.\u201d"
+        ],
+        "3": [
+            "A prayer of Habakkuk the prophet, according to Shigionoth.",
+            "LORD, I have heard the report about You, and I was afraid.\nLORD, revive Your work in the midst of the years,\nIn the midst of the years make it known.\nIn anger remember mercy.",
+            "God comes from Teman,\nAnd the Holy One from Mount Paran. Selah\nHis splendor covers the heavens,\nAnd the earth is full of His praise.",
+            "His radiance is like the sunlight;\nHe has rays flashing from His hand,\nAnd the hiding of His might is there.",
+            "Before Him goes plague,\nAnd plague comes forth after Him.",
+            "He stood and caused the earth to shudder;\nHe looked and caused the nations to jump.\nYes, the everlasting mountains were shattered,\nThe ancient hills collapsed.\nHis paths are everlasting.",
+            "I saw the tents of Cushan under distress,\nThe tent curtains of the land of Midian were trembling.",
+            "Did the LORD rage against the rivers,\nOr was Your anger against the rivers,\nOr was Your rage against the sea,\nThat You rode on Your horses,\nOn Your chariots of salvation?",
+            "You removed Your bow from its holder,\nThe arrows of Your word were sworn. Selah\nYou divided the earth with rivers.",
+            "The mountains saw You and quaked;\nThe downpour of waters swept by.\nThe deep raised its voice,\nIt lifted high its hands.",
+            "Sun and moon stood in their lofty places;\nThey went away at the light of Your arrows,\nAt the radiance of Your flashing spear.",
+            "In indignation You marched through the earth;\nIn anger You trampled the nations.",
+            "You went forth for the salvation of Your people,\nFor the salvation of Your anointed.\nYou smashed the head of the house of evil\nTo uncover him from foot to neck. Selah",
+            "You pierced with his own arrows\nThe head of his leaders.\nThey stormed in to scatter us;\nTheir arrogance was like those\nWho devour the oppressed in secret.",
+            "You trampled on the sea with Your horses,\nOn the foam of many waters.",
+            "I heard, and my inner parts trembled;\nAt the sound, my lips quivered.\nDecay enters my bones,\nAnd in my place I tremble;\nBecause I must wait quietly for the day of distress,\nFor the people to arise who will attack us.",
+            "Even if the fig tree does not blossom,\nAnd there is no fruit on the vines,\nIf the yield of the olive fails,\nAnd the fields produce no food,\nEven if the flock disappears from the fold,\nAnd there are no cattle in the stalls,",
+            "Yet I will triumph in the LORD,\nI will rejoice in the God of my salvation.",
+            "The Lord GOD is my strength,\nAnd He has made my feet like deer\u2019s feet,\nAnd has me walk on my high places.\nFor the choir director, on my stringed instruments."
+        ]
+};
