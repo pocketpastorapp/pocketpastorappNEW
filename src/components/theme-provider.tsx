@@ -2,6 +2,8 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { PreferencesService } from "@/services/preferencesService";
 import { supabase } from "@/integrations/supabase/client";
+import { StatusBar, Style } from "@capacitor/status-bar";
+import { Capacitor } from "@capacitor/core";
 
 type Theme = "dark" | "light" | "system";
 
@@ -74,22 +76,28 @@ export function ThemeProvider({
     loadTheme();
   }, [isAuthenticated, isInitialized, storageKey, defaultTheme]);
 
-  // Apply theme to DOM
+  // Apply theme to DOM and update status bar
   useEffect(() => {
     const root = window.document.documentElement;
     root.classList.remove("light", "dark");
 
+    let effectiveTheme = theme;
     if (theme === "system") {
-      const systemTheme = window.matchMedia("(prefers-color-scheme: dark)")
+      effectiveTheme = window.matchMedia("(prefers-color-scheme: dark)")
         .matches
         ? "dark"
         : "light";
-
-      root.classList.add(systemTheme);
-      return;
     }
 
-    root.classList.add(theme);
+    root.classList.add(effectiveTheme);
+
+    // Update status bar on native platforms
+    if (Capacitor.isNativePlatform()) {
+      const statusBarStyle = effectiveTheme === "dark" ? Style.Dark : Style.Light;
+      StatusBar.setStyle({ style: statusBarStyle }).catch(() => {
+        console.log('StatusBar not available');
+      });
+    }
   }, [theme]);
 
   const handleSetTheme = async (newTheme: Theme) => {

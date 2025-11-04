@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Pocket Pastor</string>
+    <string name="title_activity_main">Pocket Pastor</string>
+    <string name="package_name">com.pocketpastor.app</string>
+    <string name="custom_url_scheme">com.pocketpastor.app</string>
+</resources>
