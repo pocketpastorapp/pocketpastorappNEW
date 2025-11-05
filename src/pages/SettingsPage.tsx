@@ -9,6 +9,7 @@ import ColorPicker, { shouldUseWhiteText } from "@/components/chat/ColorPicker";
 import { PreferencesService } from "@/services/preferencesService";
 import { toast } from "@/hooks/use-toast";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { ArrowLeft } from "lucide-react";
 
 const SettingsPage: React.FC = () => {
   const navigate = useNavigate();
@@ -128,7 +129,18 @@ const SettingsPage: React.FC = () => {
   return (
     <Layout>
       <div className="w-full">
-        <h1 className="text-2xl font-bold mb-4">Settings</h1>
+        <div className="flex items-center gap-3 mb-6">
+          <Button
+            variant="outline"
+            size="icon"
+            className="rounded-full"
+            onClick={() => navigate(-1)}
+          >
+            <ArrowLeft className="h-4 w-4" />
+            <span className="sr-only">Back</span>
+          </Button>
+          <h1 className="text-2xl font-bold">Settings</h1>
+        </div>
         
         <Tabs defaultValue="appearance">
           <TabsList className="mb-3">

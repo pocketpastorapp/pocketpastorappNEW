@@ -1,18 +1,30 @@
 
-import { Coins } from "lucide-react";
+import { Coins, ArrowLeft } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import Layout from "@/components/Layout";
+import { Button } from "@/components/ui/button";
 import { useCredits } from "@/hooks/useCredits";
 import CreditsCard from "@/components/credits/CreditsCard";
 import CreditPackages from "@/components/credits/CreditPackages";
 import CreditsPageSkeleton, { CreditsPageError } from "@/components/credits/CreditsPageSkeleton";
 
 const CreditsPage = () => {
+  const navigate = useNavigate();
   const { credits, isLoading, refreshCredits } = useCredits();
 
   return (
     <Layout>
       <div className="max-w-4xl mx-auto">
         <div className="flex items-center gap-3 mb-6">
+          <Button
+            variant="outline"
+            size="icon"
+            className="mr-2 rounded-full"
+            onClick={() => navigate('/')}
+          >
+            <ArrowLeft className="h-4 w-4" />
+            <span className="sr-only">Back to Home</span>
+          </Button>
           <Coins className="h-6 w-6 text-pastor-navy" />
           <h1 className="text-2xl font-bold">Your Credits</h1>
         </div>

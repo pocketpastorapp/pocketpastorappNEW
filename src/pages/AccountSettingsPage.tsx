@@ -1,8 +1,10 @@
 
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import Layout from "@/components/Layout";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Home, User } from "lucide-react";
+import { Home, User, ArrowLeft } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { HomePageLayoutSettings } from "@/components/settings/HomePageLayoutSettings";
 import { AccountInformationSettings } from "@/components/settings/AccountInformationSettings";
 import { DangerZoneSection } from "@/components/settings/DangerZoneSection";
@@ -11,6 +13,7 @@ import { useAccountSettings } from "@/hooks/useAccountSettings";
 import { useAccountDeletion } from "@/hooks/useAccountDeletion";
 
 const AccountSettingsPage: React.FC = () => {
+  const navigate = useNavigate();
   const {
     homeSettings,
     accountData,
@@ -26,7 +29,18 @@ const AccountSettingsPage: React.FC = () => {
   return (
     <Layout>
       <div className="w-full max-w-4xl mx-auto">
-        <h1 className="text-2xl font-bold mb-6 text-center">Account Settings</h1>
+        <div className="flex items-center gap-3 mb-6">
+          <Button
+            variant="outline"
+            size="icon"
+            className="rounded-full"
+            onClick={() => navigate(-1)}
+          >
+            <ArrowLeft className="h-4 w-4" />
+            <span className="sr-only">Back</span>
+          </Button>
+          <h1 className="text-2xl font-bold">Account Settings</h1>
+        </div>
         
         <Tabs defaultValue="homepage" className="space-y-6">
           <div className="flex justify-center">
