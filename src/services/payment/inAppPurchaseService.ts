@@ -1,6 +1,6 @@
 import { Capacitor } from '@capacitor/core';
 import { BillingPlugin } from 'capacitor-billing';
-import { PRODUCT_IDS, CREDIT_PACKAGES, type Product, type Purchase, type PaymentError } from '@/types/payment-types';
+import { PRODUCT_IDS, CREDIT_PACKAGES, getCurrencyFromLocale, CURRENCY_BY_REGION, type Product, type Purchase, type PaymentError } from '@/types/payment-types';
 
 class InAppPurchaseService {
   private initialized = false;
@@ -38,9 +38,14 @@ class InAppPurchaseService {
 
   /**
    * Initialize for Android
+   * Note: Google Play automatically returns prices in the currency
+   * based on the user's device region, not the app language
    */
   private async initializeAndroid(): Promise<void> {
     try {
+      // Get the device's currency based on its locale/region setting
+      const currencyCode = getCurrencyFromLocale();
+
       // Query product details for Android
       const productIds = Object.values(PRODUCT_IDS);
 
@@ -52,13 +57,15 @@ class InAppPurchaseService {
 
         try {
           const productData = JSON.parse(result.value);
+          // Google Play returns the price in the device's region currency
+          // The currencyCode in the data is based on the user's app store region
           this.productList.push({
             id: productId,
             title: productData.title || productId,
             description: productData.description || '',
             price: productData.price || '$0.00',
-            currency: productData.currency_code || 'USD',
-            currencyCode: productData.currency_code || 'USD',
+            currency: productData.currency_code || currencyCode,
+            currencyCode: productData.currency_code || currencyCode,
             credits: CREDIT_PACKAGES[productId]?.credits || 0,
           });
         } catch (parseError) {
@@ -73,11 +80,16 @@ class InAppPurchaseService {
 
   /**
    * Initialize for iOS
+   * Note: Apple App Store automatically returns prices in the currency
+   * based on the user's device region, not the app language
    */
   private async initializeIOS(): Promise<void> {
     try {
+      // Get the device's currency based on its locale/region setting
+      const currencyCode = getCurrencyFromLocale();
+
       // iOS initialization - products are configured in app store
-      // For now, create mock products based on configuration
+      // The actual prices will come from App Store Connect based on the user's region
       const productIds = Object.values(PRODUCT_IDS);
 
       for (const productId of productIds) {
@@ -87,9 +99,10 @@ class InAppPurchaseService {
             id: productId,
             title: `${packageConfig.credits} Credits`,
             description: packageConfig.description,
+            // Show USD price as reference; actual price will be in user's region currency
             price: `$${packageConfig.priceUSD.toFixed(2)}`,
-            currency: 'USD',
-            currencyCode: 'USD',
+            currency: currencyCode,
+            currencyCode: currencyCode,
             credits: packageConfig.credits,
           });
         }

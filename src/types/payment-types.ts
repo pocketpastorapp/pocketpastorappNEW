@@ -38,16 +38,69 @@ export interface PurchaseResult {
   error?: PaymentError;
 }
 
-// Currency to language mapping
-export const CURRENCY_BY_LANGUAGE: Record<string, string> = {
-  'en': 'USD',
-  'es': 'EUR',
-  'pt': 'EUR',
-  'fr': 'EUR',
-  'ar': 'SAR',
-  'hi': 'INR',
-  'zh': 'CNY',
-  'ja': 'JPY',
+/**
+ * Get the user's currency code based on their device locale
+ * This uses the Intl API to determine currency from the device's locale,
+ * which is determined by the app store region, not the app language setting
+ */
+export function getCurrencyFromLocale(): string {
+  try {
+    // Get the device's locale
+    const locale = navigator.language || 'en-US';
+
+    // Use Intl.NumberFormat to get the currency for this locale
+    const formatter = new Intl.NumberFormat(locale, {
+      style: 'currency',
+      currency: 'USD', // dummy currency to extract the locale's currency
+    });
+
+    // Get the currency code from the formatter
+    const parts = formatter.formatToParts(1);
+    const currencyPart = parts.find((part) => part.type === 'currency');
+
+    // If we can get the currency from the locale's formatter, use it
+    if (currencyPart) {
+      return currencyPart.value;
+    }
+  } catch (error) {
+    console.error('Error detecting currency from locale:', error);
+  }
+
+  // Default to USD if detection fails
+  return 'USD';
+}
+
+/**
+ * Map of locale patterns to their primary currency codes
+ * Used as a fallback if Intl API detection doesn't work
+ */
+export const CURRENCY_BY_REGION: Record<string, string> = {
+  'en-US': 'USD',
+  'en-GB': 'GBP',
+  'en-AU': 'AUD',
+  'en-CA': 'CAD',
+  'es-ES': 'EUR',
+  'es-MX': 'MXN',
+  'es-AR': 'ARS',
+  'pt-PT': 'EUR',
+  'pt-BR': 'BRL',
+  'fr-FR': 'EUR',
+  'fr-CA': 'CAD',
+  'de-DE': 'EUR',
+  'it-IT': 'EUR',
+  'ar-SA': 'SAR',
+  'ar-AE': 'AED',
+  'ar-EG': 'EGP',
+  'hi-IN': 'INR',
+  'zh-CN': 'CNY',
+  'zh-TW': 'TWD',
+  'ja-JP': 'JPY',
+  'ko-KR': 'KRW',
+  'th-TH': 'THB',
+  'vi-VN': 'VND',
+  'id-ID': 'IDR',
+  'pl-PL': 'PLN',
+  'ru-RU': 'RUB',
 };
 
 // Product IDs for all platforms
