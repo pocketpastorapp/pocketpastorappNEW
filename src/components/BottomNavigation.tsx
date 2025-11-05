@@ -46,7 +46,7 @@ const BottomNavigation = () => {
                 {active && (
                   <motion.div
                     layoutId="activeTab"
-                    className="absolute inset-0 bg-primary/20 rounded-xl border border-primary/30"
+                    className="absolute inset-0 bg-[#184482]/20 rounded-xl border border-[#184482]/30"
                     transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
                   />
                 )}
@@ -54,7 +54,7 @@ const BottomNavigation = () => {
                 {/* Icon with bounce animation */}
                 <motion.div
                   className={`relative z-10 transition-colors duration-200 ${
-                    active ? "text-primary" : "text-muted-foreground"
+                    active ? "text-[#184482]" : "text-muted-foreground"
                   }`}
                   whileTap={{ scale: 0.9 }}
                   animate={{
@@ -68,7 +68,7 @@ const BottomNavigation = () => {
                 {/* Label with fade */}
                 <motion.span
                   className={`relative z-10 text-xs font-medium transition-colors duration-200 ${
-                    active ? "text-primary" : "text-muted-foreground"
+                    active ? "text-[#184482]" : "text-muted-foreground"
                   }`}
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
