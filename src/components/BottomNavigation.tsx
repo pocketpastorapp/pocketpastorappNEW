@@ -28,7 +28,7 @@ const BottomNavigation = () => {
       initial={{ y: 100 }}
       animate={{ y: 0 }}
       transition={{ type: "spring", stiffness: 300, damping: 30 }}
-      className="fixed bottom-0 left-0 right-0 z-30 bg-slate-900 border-t border-slate-800 pb-safe"
+      className="fixed bottom-0 left-0 right-0 z-30 bg-background border-t border-border pb-safe"
     >
       <div className="container mx-auto px-4">
         <div className="flex justify-center items-center h-20 gap-8">
@@ -46,7 +46,7 @@ const BottomNavigation = () => {
                 {active && (
                   <motion.div
                     layoutId="activeTab"
-                    className="absolute inset-0 bg-blue-600/20 rounded-xl border border-blue-500/30"
+                    className="absolute inset-0 bg-primary/20 rounded-xl border border-primary/30"
                     transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
                   />
                 )}
@@ -54,7 +54,7 @@ const BottomNavigation = () => {
                 {/* Icon with bounce animation */}
                 <motion.div
                   className={`relative z-10 transition-colors duration-200 ${
-                    active ? "text-white" : "text-slate-400"
+                    active ? "text-primary" : "text-muted-foreground"
                   }`}
                   whileTap={{ scale: 0.9 }}
                   animate={{
@@ -68,7 +68,7 @@ const BottomNavigation = () => {
                 {/* Label with fade */}
                 <motion.span
                   className={`relative z-10 text-xs font-medium transition-colors duration-200 ${
-                    active ? "text-white" : "text-slate-400"
+                    active ? "text-primary" : "text-muted-foreground"
                   }`}
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}

@@ -67,13 +67,6 @@ const AppHeader = ({ variant = "default" }: AppHeaderProps) => {
 
             {user && (
               <>
-                {/* Bible Button */}
-                <Link to="/bible">
-                  <Button variant="ghost" size="icon">
-                    <BookOpen className="h-5 w-5" />
-                  </Button>
-                </Link>
-
                 {/* Settings Dropdown */}
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
