@@ -47,11 +47,11 @@ const ChatFooter = ({
   bottomPosition
 }: ChatFooterProps) => {
   return (
-    <div 
+    <div
       className="fixed left-0 right-0 bg-background border-t transition-all duration-200 ease-out"
-      style={{ 
+      style={{
         bottom: bottomPosition,
-        zIndex: 30
+        zIndex: 40
       }}
     >
       {(isSpeaking || isPaused) && (

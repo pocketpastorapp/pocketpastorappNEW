@@ -16,13 +16,16 @@ export const useChatPageLayout = ({
   isSpeaking,
   isPaused
 }: UseChatPageLayoutProps) => {
+  // Bottom navigation height (h-20 = 80px)
+  const BOTTOM_NAV_HEIGHT = 80;
+
   // Calculate proper bottom positioning for mobile
   const getBottomPosition = () => {
     if (!isMobile) return '0px';
     if (isKeyboardVisible && keyboardHeight > 0) {
-      return `${keyboardHeight + 10}px`;
+      return `${keyboardHeight + BOTTOM_NAV_HEIGHT + 10}px`;
     }
-    return '0px';
+    return `${BOTTOM_NAV_HEIGHT}px`;
   };
 
   // Calculate proper padding for chat container
@@ -30,13 +33,13 @@ export const useChatPageLayout = ({
     if (!isMobile) {
       return (isSpeaking || isPaused) ? '200px' : '140px';
     }
-    
+
     if (isKeyboardVisible && keyboardHeight > 0) {
       const inputContainerHeight = showPromptButtons ? 120 : 80;
-      return `${keyboardHeight + inputContainerHeight + 20}px`;
+      return `${keyboardHeight + inputContainerHeight + BOTTOM_NAV_HEIGHT + 20}px`;
     }
-    
-    return (isSpeaking || isPaused) ? '200px' : '120px';
+
+    return (isSpeaking || isPaused) ? `${200 + BOTTOM_NAV_HEIGHT}px` : `${120 + BOTTOM_NAV_HEIGHT}px`;
   };
 
   return {
