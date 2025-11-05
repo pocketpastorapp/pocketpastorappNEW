@@ -3,7 +3,8 @@ import { PRODUCT_IDS } from '@/types/payment-types';
 
 /**
  * Verify purchase receipt and award credits
- * This function should be called after a successful purchase
+ * SECURITY: This function calls a Supabase Edge Function that performs server-side
+ * receipt validation with Apple App Store Server API or Google Play Billing API
  */
 export async function verifyAndAwardCredits(
   userId: string,
@@ -13,24 +14,16 @@ export async function verifyAndAwardCredits(
   platform: 'ios' | 'android'
 ): Promise<{ success: boolean; creditsAwarded: number; error?: string }> {
   try {
-    // First check if this purchase has already been processed
-    const { data: existingPurchase } = await supabase
-      .from('purchases')
-      .select('id, credits_purchased')
-      .eq('user_id', userId)
-      .eq('product_id', productId)
-      .eq('transaction_id', transactionId)
-      .single();
-
-    if (existingPurchase) {
-      console.log('Purchase already processed');
+    // Validate inputs
+    if (!userId || !receipt || !productId || !transactionId) {
       return {
-        success: true,
-        creditsAwarded: existingPurchase.credits_purchased,
+        success: false,
+        creditsAwarded: 0,
+        error: 'Missing required purchase data',
       };
     }
 
-    // Determine credits for the product
+    // Validate product ID exists
     const credits = getCreditsForProduct(productId);
     if (credits === 0) {
       return {
@@ -40,35 +33,88 @@ export async function verifyAndAwardCredits(
       };
     }
 
-    // In a real implementation, you would verify the receipt with:
-    // - Apple App Store Server API for iOS
-    // - Google Play Billing Library for Android
-    // For now, we'll assume the receipt is valid (you should implement proper verification)
+    // Check for duplicate purchases to prevent replay attacks
+    const { data: existingPurchase, error: queryError } = await supabase
+      .from('purchases')
+      .select('id, credits_purchased, status')
+      .eq('user_id', userId)
+      .eq('transaction_id', transactionId)
+      .single();
 
-    // TODO: Implement real receipt verification:
-    // 1. For iOS: Call Apple's App Store Server API to validate receipt
-    // 2. For Android: Call Google Play's billing API to validate purchase token
-    // 3. Check that the product ID matches
-    // 4. Check that the purchase is not expired or refunded
-    // 5. Check that the transaction ID is not already redeemed
+    if (queryError && queryError.code !== 'PGRST116') {
+      // PGRST116 = not found, which is expected for new purchases
+      return {
+        success: false,
+        creditsAwarded: 0,
+        error: 'Database error checking for duplicate purchase',
+      };
+    }
 
-    // Create purchase record
+    if (existingPurchase) {
+      // Duplicate purchase detected - return existing credits
+      if (existingPurchase.status === 'completed') {
+        return {
+          success: true,
+          creditsAwarded: existingPurchase.credits_purchased,
+        };
+      }
+      // If in pending state, don't process again
+      return {
+        success: false,
+        creditsAwarded: 0,
+        error: 'Purchase is still being processed',
+      };
+    }
+
+    // Call Supabase Edge Function for server-side receipt verification
+    // IMPORTANT: This must validate the receipt with the actual app store
+    const { data: verificationResult, error: verifyError } = await supabase.functions.invoke(
+      'verify-app-store-receipt',
+      {
+        body: {
+          receipt,
+          productId,
+          transactionId,
+          platform,
+          userId,
+        },
+      }
+    );
+
+    if (verifyError) {
+      console.error('Receipt verification error:', verifyError);
+      return {
+        success: false,
+        creditsAwarded: 0,
+        error: 'Failed to verify receipt with app store',
+      };
+    }
+
+    if (!verificationResult?.valid) {
+      return {
+        success: false,
+        creditsAwarded: 0,
+        error: verificationResult?.error || 'Receipt validation failed',
+      };
+    }
+
+    // Create purchase record with 'verified' status
     const { error: insertError } = await supabase.from('purchases').insert({
       user_id: userId,
       product_id: productId,
       transaction_id: transactionId,
       receipt_data: receipt,
       credits_purchased: credits,
-      status: 'completed',
+      status: 'verified',
       platform: platform,
+      verified_at: new Date().toISOString(),
     });
 
     if (insertError) {
-      console.error('Error inserting purchase record:', insertError);
       return {
         success: false,
         creditsAwarded: 0,
-        error: insertError.message,
+        error: 'Failed to record purchase',
       };
     }
 
@@ -79,24 +125,34 @@ export async function verifyAndAwardCredits(
     });
 
     if (creditError) {
-      console.error('Error awarding credits:', creditError);
+      // Mark purchase as failed to credit
+      await supabase
+        .from('purchases')
+        .update({ status: 'failed' })
+        .eq('transaction_id', transactionId);
+
       return {
         success: false,
         creditsAwarded: 0,
-        error: creditError.message,
+        error: 'Failed to award credits',
       };
     }
+
+    // Update purchase status to completed
+    await supabase
+      .from('purchases')
+      .update({ status: 'completed', completed_at: new Date().toISOString() })
+      .eq('transaction_id', transactionId);
 
     return {
       success: true,
       creditsAwarded: credits,
     };
   } catch (error) {
-    console.error('Error verifying purchase:', error);
     return {
       success: false,
       creditsAwarded: 0,
-      error: error instanceof Error ? error.message : 'Unknown error',
+      error: error instanceof Error ? error.message : 'Unknown error during purchase verification',
     };
   }
 }
@@ -117,48 +173,49 @@ function getCreditsForProduct(productId: string): number {
 }
 
 /**
- * Verify Apple receipt using App Store Server API
- * This should be called from a backend function (not the client)
+ * IMPLEMENTATION GUIDE FOR SUPABASE EDGE FUNCTION: verify-app-store-receipt
+ *
+ * This Edge Function MUST be created in your Supabase project to handle server-side
+ * receipt verification. The client code above calls this function.
+ *
+ * FILE: supabase/functions/verify-app-store-receipt/index.ts
+ *
+ * REQUIRED IMPLEMENTATION:
+ *
+ * 1. APPLE APP STORE VERIFICATION:
+ *    - Use Apple's App Store Server API (StoreKit 2)
+ *    - Endpoint: https://api.storekit.itunes.apple.com/inApps/v1/transactions/lookup/{originalTransactionId}
+ *    - Set up authentication with Apple's JWT (requires private key from App Store Connect)
+ *    - Validate: productId, transactionId, bundle ID, and purchase date
+ *    - Check: Receipt is not revoked, subscription is active (if applicable)
+ *
+ * 2. GOOGLE PLAY VERIFICATION:
+ *    - Use Google Play Developer API
+ *    - Endpoint: https://androidpublisher.googleapis.com/androidpublisher/v3/applications/{packageName}/purchases/products/{productId}/tokens/{token}
+ *    - Set up authentication with Google Service Account JSON
+ *    - Validate: productId, purchaseToken, packageName
+ *    - Check: Purchase state is 'Purchased', not 'Pending' or 'Canceled'
+ *
+ * 3. SECURITY CHECKS:
+ *    - Verify userId matches authenticated user (from JWT)
+ *    - Check transaction_id is not already in database
+ *    - Validate receipt is not expired
+ *    - Log all verification attempts for audit trail
+ *    - Use HTTPS only, no sensitive data in logs
+ *
+ * EXAMPLE STRUCTURE:
+ * ```
+ * export const verify = async (req: Request) => {
+ *   const { receipt, productId, transactionId, platform, userId } = await req.json()
+ *
+ *   if (platform === 'ios') {
+ *     return verifyAppleReceipt(receipt, productId, transactionId, userId)
+ *   } else if (platform === 'android') {
+ *     return verifyGoogleReceipt(receipt, productId, transactionId, userId)
+ *   }
+ * }
+ * ```
+ *
+ * CRITICAL: DO NOT accept receipt verification without calling official app store APIs.
+ * Without this, users can claim unlimited free credits.
  */
-export async function verifyAppleReceipt(
-  receipt: string,
-  productId: string
-): Promise<{ valid: boolean; transactionId?: string }> {
-  // This should be implemented on the backend using Apple's App Store Server API
-  // The client should never have direct access to verify receipts
-  // Instead, the backend should validate using Apple's official endpoints:
-  // https://api.storekit.itunes.apple.com/inApps/v1/transactions/lookup/<originalTransactionId>
-
-  console.log('Apple receipt verification should be done on backend');
-  console.log('Product ID:', productId);
-
-  // Placeholder implementation
-  return {
-    valid: true,
-    transactionId: receipt.substring(0, 20),
-  };
-}
-
-/**
- * Verify Google receipt using Google Play Billing API
- * This should be called from a backend function (not the client)
- */
-export async function verifyGoogleReceipt(
-  purchaseToken: string,
-  packageName: string,
-  productId: string
-): Promise<{ valid: boolean; transactionId?: string }> {
-  // This should be implemented on the backend using Google's Play Billing Library
-  // The client should never have direct access to verify receipts
-  // Instead, the backend should validate using Google's API:
-  // https://androidpublisher.googleapis.com/androidpublisher/v3/applications/{packageName}/purchases/products/{productId}/tokens/{token}
-
-  console.log('Google receipt verification should be done on backend');
-  console.log('Package:', packageName, 'Product:', productId);
-
-  // Placeholder implementation
-  return {
-    valid: true,
-    transactionId: purchaseToken.substring(0, 20),
-  };
-}

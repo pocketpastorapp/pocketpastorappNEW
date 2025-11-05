@@ -36,10 +36,11 @@ const LoginForm = ({ isLoading, onSubmit, getEmailValue }: LoginFormProps) => {
   });
 
   // Load saved email and remember me preference on component mount
+  // Using sessionStorage for "remember me" to clear data when session ends
   useEffect(() => {
-    const savedEmail = localStorage.getItem('pocket-pastor-email');
-    const savedRememberMe = localStorage.getItem('pocket-pastor-remember-me') === 'true';
-    
+    const savedEmail = sessionStorage.getItem('pocket-pastor-email');
+    const savedRememberMe = sessionStorage.getItem('pocket-pastor-remember-me') === 'true';
+
     if (savedEmail && savedRememberMe) {
       form.setValue('email', savedEmail);
       form.setValue('rememberMe', true);
@@ -55,14 +56,15 @@ const LoginForm = ({ isLoading, onSubmit, getEmailValue }: LoginFormProps) => {
 
   const handleSubmit = (values: LoginFormValues) => {
     // Save or remove email based on remember me preference
+    // Using sessionStorage to clear data when browser session ends (more secure than localStorage)
     if (values.rememberMe) {
-      localStorage.setItem('pocket-pastor-email', values.email);
-      localStorage.setItem('pocket-pastor-remember-me', 'true');
+      sessionStorage.setItem('pocket-pastor-email', values.email);
+      sessionStorage.setItem('pocket-pastor-remember-me', 'true');
     } else {
-      localStorage.removeItem('pocket-pastor-email');
-      localStorage.removeItem('pocket-pastor-remember-me');
+      sessionStorage.removeItem('pocket-pastor-email');
+      sessionStorage.removeItem('pocket-pastor-remember-me');
     }
-    
+
     onSubmit(values);
   };
 

@@ -26,11 +26,9 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   
   // If no user is logged in, redirect to login page
   if (!user) {
-    console.log("No user detected, redirecting to login");
     return <Navigate to="/login" replace state={{ from: location }} />;
   }
-  
-  console.log("User authenticated, rendering protected content");
+
   // If user is logged in, render the children components
   return <>{children}</>;
 };

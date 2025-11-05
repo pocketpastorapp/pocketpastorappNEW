@@ -36,7 +36,7 @@ const config: CapacitorConfig = {
     contentInset: 'automatic',
   },
   android: {
-    allowMixedContent: true,
+    allowMixedContent: false,
   },
 };
 

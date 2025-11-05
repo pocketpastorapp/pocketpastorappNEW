@@ -1,11 +1,14 @@
 
 // Enhanced Content Security Policy configuration
+// SECURITY NOTE: unsafe-inline for scripts should be removed when implementing nonce-based CSP
 const cspConfig = {
   'default-src': ["'self'"],
   'script-src': [
     "'self'",
-    "'unsafe-inline'", // Required for Vite in development and specific inline scripts
-    "https://tsgbptmfvyhpfpefdbsn.supabase.co"
+    "'unsafe-inline'", // TODO: Remove when nonce-based CSP is implemented in Vite
+    "https://tsgbptmfvyhpfpefdbsn.supabase.co",
+    "https://pagead2.googlesyndication.com", // Google AdSense
+    "https://cdn.gpteng.co" // GPT Engineer analytics
   ],
   'style-src': [
     "'self'",

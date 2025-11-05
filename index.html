@@ -80,9 +80,17 @@
     
     <link rel="apple-touch-icon" href="/icon-192x192.png" />
     <link rel="manifest" href="/manifest.json" />
+
+    <!-- SECURITY: External scripts with crossorigin for integrity checking -->
+    <!-- TODO: Add Subresource Integrity (SRI) hashes: integrity="sha384-..." -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8826336392133988" crossorigin="anonymous"></script>
+
     <title>Pocket Pastor</title>
-    <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
+
+    <!-- GPT Engineer analytics module - Consider hosting locally if possible -->
+    <!-- TODO: Add SRI hash when available: integrity="sha384-..." -->
+    <script src="https://cdn.gpteng.co/gptengineer.js" type="module" crossorigin="anonymous"></script>
+
     <script src="/register-sw.js"></script>
   </head>
   <body>
