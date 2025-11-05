@@ -6,9 +6,10 @@ import BottomNavigation from "./BottomNavigation";
 interface LayoutProps {
   children: React.ReactNode;
   showHeader?: boolean;
+  showFooter?: boolean;
 }
 
-const Layout = ({ children, showHeader = true }: LayoutProps) => {
+const Layout = ({ children, showHeader = true, showFooter = false }: LayoutProps) => {
   return (
     <div className="min-h-screen flex flex-col bg-background">
       {showHeader && <AppHeader variant="default" />}
@@ -26,8 +27,8 @@ const Layout = ({ children, showHeader = true }: LayoutProps) => {
         </div>
       </motion.main>
 
-      {/* Footer */}
-      <Footer />
+      {/* Footer - Only show on Login and Settings pages */}
+      {showFooter && <Footer />}
 
       {/* Bottom Navigation */}
       <BottomNavigation />

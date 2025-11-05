@@ -127,7 +127,7 @@ const SettingsPage: React.FC = () => {
   const containerPadding = isMobile ? "py-4" : "py-6"; // Reduced container padding
   
   return (
-    <Layout>
+    <Layout showFooter={true}>
       <div className="w-full">
         <div className="flex items-center gap-3 mb-6">
           <Button
