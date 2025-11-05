@@ -4,7 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { useInAppPurchase } from '@/hooks/useInAppPurchase';
 import { CREDIT_PACKAGES, PRODUCT_IDS } from '@/types/payment-types';
-import { AlertCircle, Zap, Check } from 'lucide-react';
+import { AlertCircle, Zap } from 'lucide-react';
 
 interface CreditPackagesProps {
   onPurchaseSuccess?: () => void;
@@ -14,7 +14,6 @@ const CreditPackages = ({ onPurchaseSuccess }: CreditPackagesProps) => {
   const { products, isLoading, isPurchasing, error, purchase, clearError, isAvailable } =
     useInAppPurchase();
   const [selectedPackage, setSelectedPackage] = useState<string | null>(null);
-  const [showRestoreButton, setShowRestoreButton] = useState(false);
 
   // Get packages in order of ID
   const packageList = [
@@ -100,7 +99,12 @@ const CreditPackages = ({ onPurchaseSuccess }: CreditPackagesProps) => {
           const packageConfig = CREDIT_PACKAGES[productId];
           const product = products.find((p) => p.id === productId);
 
-          if (!packageConfig || !product) return null;
+          // If no packageConfig, skip this item
+          if (!packageConfig) return null;
+
+          // Use product data if available, otherwise use fallback from config
+          const displayPrice = product?.price || `$${packageConfig.priceUSD.toFixed(2)}`;
+          const displayCurrency = product?.currency || 'USD';
 
           const isPopular = packageConfig.popular;
           const isPurchasingThisProduct = selectedPackage === productId && isPurchasing;
@@ -141,8 +145,8 @@ const CreditPackages = ({ onPurchaseSuccess }: CreditPackagesProps) => {
                 <CardContent className="space-y-4">
                   {/* Price */}
                   <div>
-                    <p className="text-3xl font-bold">{product.price}</p>
-                    <p className="text-xs text-muted-foreground">{product.currency}</p>
+                    <p className="text-3xl font-bold">{displayPrice}</p>
+                    <p className="text-xs text-muted-foreground">{displayCurrency}</p>
                   </div>
 
                   {/* Savings Badge */}
@@ -158,7 +162,7 @@ const CreditPackages = ({ onPurchaseSuccess }: CreditPackagesProps) => {
                   {/* Purchase Button */}
                   <Button
                     onClick={() => handlePurchase(productId)}
-                    disabled={isPurchasing || !product}
+                    disabled={isPurchasing}
                     variant={isPopular ? 'default' : 'outline'}
                     className="w-full"
                   >
@@ -179,54 +183,6 @@ const CreditPackages = ({ onPurchaseSuccess }: CreditPackagesProps) => {
             </motion.div>
           );
         })}
-      </div>
-
-      {/* Restore Purchases Section */}
-      <div className="pt-6 border-t border-border">
-        <div className="flex items-center justify-between">
-          <div>
-            <h3 className="font-semibold">Already purchased credits?</h3>
-            <p className="text-sm text-muted-foreground">Restore your previous purchases</p>
-          </div>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => setShowRestoreButton(!showRestoreButton)}
-          >
-            {showRestoreButton ? 'Hide' : 'Show'}
-          </Button>
-        </div>
-
-        {showRestoreButton && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-            className="mt-4"
-          >
-            <Button
-              variant="default"
-              className="w-full"
-              disabled={isPurchasing}
-              onClick={() => {
-                // This would call the restore function from the hook
-                console.log('Restore purchases clicked');
-              }}
-            >
-              {isPurchasing ? (
-                <>
-                  <span className="inline-block animate-spin mr-2">⏳</span>
-                  Restoring...
-                </>
-              ) : (
-                <>
-                  <Check size={16} className="mr-2" />
-                  Restore Purchases
-                </>
-              )}
-            </Button>
-          </motion.div>
-        )}
       </div>
 
       {/* Info Message */}
