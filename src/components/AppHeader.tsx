@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { History, Settings, X, LogOut, Coins, Palette, Sun, Moon } from "lucide-react";
+import { History, Settings, X, LogOut, Coins, Palette, Sun, Moon, MessageSquare, BookOpen, Star } from "lucide-react";
 import { CreditDisplay } from "./CreditDisplay";
 import { useAuth } from "@/context/auth-context";
 import { useTheme } from "@/components/theme-provider";
