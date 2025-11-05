@@ -3,11 +3,11 @@ import { Coins } from "lucide-react";
 import Layout from "@/components/Layout";
 import { useCredits } from "@/hooks/useCredits";
 import CreditsCard from "@/components/credits/CreditsCard";
-import CreditActions from "@/components/credits/CreditActions";
+import CreditPackages from "@/components/credits/CreditPackages";
 import CreditsPageSkeleton, { CreditsPageError } from "@/components/credits/CreditsPageSkeleton";
 
 const CreditsPage = () => {
-  const { credits, isLoading, useCredit, addCredits, addCreditsFromAd, refreshCredits } = useCredits();
+  const { credits, isLoading, refreshCredits } = useCredits();
 
   return (
     <Layout>
@@ -24,14 +24,10 @@ const CreditsPage = () => {
         ) : (
           <>
             <CreditsCard credits={credits} />
-            <CreditActions 
-              credits={credits}
-              addCredits={addCredits}
-              addCreditsFromAd={addCreditsFromAd}
-              useCredit={useCredit}
-              onPurchaseClick={() => {}}
-              refreshCredits={refreshCredits}
-            />
+            <div className="mt-8">
+              <h2 className="text-xl font-bold mb-4">Buy More Credits</h2>
+              <CreditPackages onPurchaseSuccess={refreshCredits} />
+            </div>
           </>
         )}
       </div>

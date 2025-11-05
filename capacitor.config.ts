@@ -21,6 +21,16 @@ const config: CapacitorConfig = {
       style: 'light',
       resizeOnFullScreen: true,
     },
+    InAppBilling: {
+      // Product IDs for iOS and Android in-app purchases
+      productIds: [
+        'com.pocketpastor.credits_5',
+        'com.pocketpastor.credits_30',
+        'com.pocketpastor.credits_75',
+        'com.pocketpastor.credits_150',
+        'com.pocketpastor.credits_300',
+      ],
+    },
   },
   ios: {
     contentInset: 'automatic',
