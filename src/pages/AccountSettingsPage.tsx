@@ -8,7 +8,6 @@ import { Button } from "@/components/ui/button";
 import { HomePageLayoutSettings } from "@/components/settings/HomePageLayoutSettings";
 import { AccountInformationSettings } from "@/components/settings/AccountInformationSettings";
 import { DangerZoneSection } from "@/components/settings/DangerZoneSection";
-import { SecurityNotification } from "@/components/SecurityNotification";
 import { useAccountSettings } from "@/hooks/useAccountSettings";
 import { useAccountDeletion } from "@/hooks/useAccountDeletion";
 
@@ -64,7 +63,6 @@ const AccountSettingsPage: React.FC = () => {
           </TabsContent>
           
           <TabsContent value="account" className="space-y-6">
-            <SecurityNotification />
             <AccountInformationSettings
               accountData={accountData}
               accountLoading={accountLoading}
