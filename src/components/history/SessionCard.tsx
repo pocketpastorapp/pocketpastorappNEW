@@ -1,5 +1,4 @@
-
-import { useState } from "react";
+import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -20,11 +19,11 @@ interface SessionCardProps {
 
 const SessionCard = ({ session, onDelete, isDeleting }: SessionCardProps) => {
   const navigate = useNavigate();
-  
+
   const handleSessionClick = () => {
     navigate(`/history/${session.id}`);
   };
-  
+
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
     return date.toLocaleDateString(undefined, {
@@ -33,12 +32,17 @@ const SessionCard = ({ session, onDelete, isDeleting }: SessionCardProps) => {
       day: "numeric",
     });
   };
-  
+
   return (
-    <Card
-      className="cursor-pointer hover:bg-accent/50 transition-colors relative"
-      onClick={handleSessionClick}
+    <motion.div
+      whileHover={{ y: -4, scale: 1.02 }}
+      whileTap={{ scale: 0.98 }}
+      transition={{ type: "spring", stiffness: 400, damping: 25 }}
     >
+      <Card
+        className="cursor-pointer hover:bg-accent/50 hover:border-primary/50 hover:shadow-lg transition-all duration-200 relative"
+        onClick={handleSessionClick}
+      >
       <CardContent className="flex items-start p-4">
         <div className="mr-4 mt-1">
           <Clock className="h-5 w-5 text-muted-foreground" />
@@ -79,6 +83,7 @@ const SessionCard = ({ session, onDelete, isDeleting }: SessionCardProps) => {
         </div>
       </CardContent>
     </Card>
+    </motion.div>
   );
 };
 

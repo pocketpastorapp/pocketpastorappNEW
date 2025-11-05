@@ -1,6 +1,7 @@
 import { Link, useLocation } from "react-router-dom";
 import { Home, MessageSquare, BookOpen, Star } from "lucide-react";
 import { useAuth } from "@/context/auth-context";
+import { motion } from "framer-motion";
 
 const BottomNavigation = () => {
   const location = useLocation();
@@ -23,7 +24,12 @@ const BottomNavigation = () => {
   ];
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-30 bg-slate-900 border-t border-slate-800 pb-safe">
+    <motion.nav
+      initial={{ y: 100 }}
+      animate={{ y: 0 }}
+      transition={{ type: "spring", stiffness: 300, damping: 30 }}
+      className="fixed bottom-0 left-0 right-0 z-30 bg-slate-900 border-t border-slate-800 pb-safe"
+    >
       <div className="container mx-auto px-4">
         <div className="flex justify-center items-center h-20 gap-8">
           {navItems.map((item) => {
@@ -34,20 +40,48 @@ const BottomNavigation = () => {
               <Link
                 key={item.path}
                 to={item.path}
-                className={`flex flex-col items-center justify-center gap-1 px-4 py-2 rounded-lg transition-all duration-200 ${
-                  active
-                    ? "text-white scale-110"
-                    : "text-slate-400 hover:text-slate-300"
-                }`}
+                className="relative flex flex-col items-center justify-center gap-1 px-4 py-2 rounded-lg"
               >
-                <Icon size={24} strokeWidth={1.5} />
-                <span className="text-xs font-medium">{item.label}</span>
+                {/* Animated pill background for active state */}
+                {active && (
+                  <motion.div
+                    layoutId="activeTab"
+                    className="absolute inset-0 bg-blue-600/20 rounded-xl border border-blue-500/30"
+                    transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                  />
+                )}
+
+                {/* Icon with bounce animation */}
+                <motion.div
+                  className={`relative z-10 transition-colors duration-200 ${
+                    active ? "text-white" : "text-slate-400"
+                  }`}
+                  whileTap={{ scale: 0.9 }}
+                  animate={{
+                    scale: active ? 1.1 : 1,
+                  }}
+                  transition={{ type: "spring", stiffness: 400, damping: 17 }}
+                >
+                  <Icon size={24} strokeWidth={1.5} />
+                </motion.div>
+
+                {/* Label with fade */}
+                <motion.span
+                  className={`relative z-10 text-xs font-medium transition-colors duration-200 ${
+                    active ? "text-white" : "text-slate-400"
+                  }`}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.1 }}
+                >
+                  {item.label}
+                </motion.span>
               </Link>
             );
           })}
         </div>
       </div>
-    </nav>
+    </motion.nav>
   );
 };
 

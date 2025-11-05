@@ -1,5 +1,4 @@
-
-import React from "react";
+import { motion } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
 import { ChatMessage } from "@/types/chat-types";
 
@@ -14,22 +13,28 @@ const FavoriteCard = ({ message, onClick }: FavoriteCardProps) => {
     if (text.length <= maxLength) return text;
     return text.substring(0, maxLength) + "...";
   };
-  
+
   return (
-    <Card 
-      className="cursor-pointer hover:bg-secondary/50 transition-colors"
-      onClick={onClick}
+    <motion.div
+      whileHover={{ y: -4, scale: 1.02 }}
+      whileTap={{ scale: 0.98 }}
+      transition={{ type: "spring", stiffness: 400, damping: 25 }}
     >
-      <CardContent className="p-4">
-        <div className="text-sm text-muted-foreground mb-2">
-          {new Date(message.timestamp).toLocaleDateString()} • {new Date(message.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-        </div>
-        
-        <div className="line-clamp-2 text-sm">
-          {truncateText(message.content)}
-        </div>
-      </CardContent>
-    </Card>
+      <Card
+        className="cursor-pointer hover:bg-secondary/50 hover:border-primary/50 hover:shadow-lg transition-all duration-200"
+        onClick={onClick}
+      >
+        <CardContent className="p-4">
+          <div className="text-sm text-muted-foreground mb-2">
+            {new Date(message.timestamp).toLocaleDateString()} • {new Date(message.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+          </div>
+
+          <div className="line-clamp-2 text-sm">
+            {truncateText(message.content)}
+          </div>
+        </CardContent>
+      </Card>
+    </motion.div>
   );
 };
 
