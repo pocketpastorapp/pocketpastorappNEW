@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { MessageSquare, Star, History, Settings, X, LogOut, Coins, Palette, BookOpen, Sun, Moon, Home } from "lucide-react";
+import { History, Settings, X, LogOut, Coins, Palette, Sun, Moon } from "lucide-react";
 import { CreditDisplay } from "./CreditDisplay";
 import { useAuth } from "@/context/auth-context";
 import { useTheme } from "@/components/theme-provider";
@@ -91,24 +91,6 @@ const AppHeader = ({ variant = "default" }: AppHeaderProps) => {
                     </div>
                     <DropdownMenuSeparator />
 
-                    <DropdownMenuItem>
-                      <Link to="/" className="w-full flex items-center gap-2">
-                        <Home size={16} />
-                        <span>Home</span>
-                      </Link>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem>
-                      <Link to="/chat" className="w-full flex items-center gap-2">
-                        <MessageSquare size={16} />
-                        <span>Chat</span>
-                      </Link>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem>
-                      <Link to="/favorites" className="w-full flex items-center gap-2">
-                        <Star size={16} />
-                        <span>Favorites</span>
-                      </Link>
-                    </DropdownMenuItem>
                     <DropdownMenuItem>
                       <Link to="/history" className="w-full flex items-center gap-2">
                         <History size={16} />
