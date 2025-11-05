@@ -53,7 +53,7 @@ const AppHeader = ({ variant = "default" }: AppHeaderProps) => {
   return (
     <>
       {/* Fixed Header */}
-      <header className={`border-b bg-background fixed top-0 left-0 right-0 z-30 ${variant === "default" ? "pt-safe" : ""}`}>
+      <header className="border-b bg-background fixed top-0 left-0 right-0 z-30 pt-safe">
         <div className="container mx-auto px-4 py-3 flex justify-between items-center">
           <div className="flex items-center">
             <Link to="/" className="font-bold text-lg flex items-center">
