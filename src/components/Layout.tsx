@@ -14,6 +14,7 @@ import {
   DropdownMenuTrigger
 } from "./ui/dropdown-menu";
 import Footer from "./Footer";
+import BottomNavigation from "./BottomNavigation";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -222,15 +223,18 @@ const Layout = ({ children, showHeader = true }: LayoutProps) => {
         </div>
       )}
 
-      {/* Main Content - Added proper padding top to account for fixed header */}
-      <main className="flex-1 pt-16 pb-safe">
+      {/* Main Content - Added proper padding top to account for fixed header and bottom to account for bottom nav */}
+      <main className="flex-1 pt-16 pb-28">
         <div className="container mx-auto px-4 py-6">
           {children}
         </div>
       </main>
-      
+
       {/* Footer */}
       <Footer />
+
+      {/* Bottom Navigation */}
+      <BottomNavigation />
     </div>
   );
 };

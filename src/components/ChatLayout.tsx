@@ -14,6 +14,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger
 } from "./ui/dropdown-menu";
+import BottomNavigation from "./BottomNavigation";
 
 interface ChatLayoutProps {
   children: React.ReactNode;
@@ -221,10 +222,13 @@ const { user, profile, logout } = useAuth();
         </div>
       )}
 
-      {/* Main Content - Added padding top to account for fixed header, no footer */}
-      <main className="flex-1 container mx-auto px-4 py-6 mt-14">
+      {/* Main Content - Added padding top to account for fixed header, bottom padding for navigation */}
+      <main className="flex-1 container mx-auto px-4 py-6 mt-14 pb-28">
         {children}
       </main>
+
+      {/* Bottom Navigation */}
+      <BottomNavigation />
     </div>
   );
 };
